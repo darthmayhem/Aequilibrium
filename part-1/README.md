@@ -1,4 +1,7 @@
 # Part 1: Aequilibrium | The Castle Company
+
+## The Problem Domain
+
 Aequilibrium is in the business of building castles (we really aren’t, but let’s pretend). Now, we also
 believe in quality aesthetics, so we only want to build castles in two types of places:
 
