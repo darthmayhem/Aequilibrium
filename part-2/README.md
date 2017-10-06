@@ -85,7 +85,7 @@ Survivors from the losing team (Autobots): Hubcap
 To run the completed example:
 
 ```
-node the-transformation-company.js
+node app.js
 ```
 
 A valid sample input array would look like:

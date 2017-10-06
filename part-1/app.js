@@ -11,7 +11,7 @@ console.log('\n\nWelcome to the part one of the Aequilibrium Technical Assignmen
 var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
 
-rl.setPrompt('\n\nPlease enter your peak and valley array numbers separated by commas\n(type exit to quit)>');
+rl.setPrompt('\n\nPlease enter your peak and valley array numbers separated by commas\n(type exit to quit)> ');
 rl.on('line', function (line) {
     var array = line.toString().split(',');
     if (line === 'exit'){
@@ -20,7 +20,7 @@ rl.on('line', function (line) {
     }
     if (!peaksAndValleys.validateInput(array)){
         console.log('\nError: We are not able to process your input!\nPlease try again. (Invalid array detected)\n\n');
-        rl.setPrompt('Please enter your peak and valley array numbers separated by commas\n(integers only please, type exit to quit)>');
+        rl.setPrompt('Please enter your peak and valley array numbers separated by commas\n(integers only please, type exit to quit)> ');
         rl.prompt();
         return;
     }

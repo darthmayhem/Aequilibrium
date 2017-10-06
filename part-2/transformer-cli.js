@@ -1,18 +1,14 @@
 /**
  * Created by steve haight on 10/6/2017.
  *
- * description: this module receives and validates an array finding the peaks and valleys in it.
+ * description: this module defines a cli for the Transformers modules
  */
 
 var readline = require('readline')
-    , Transformer = require('./transformer');
+    , Transformer = require('./transformer')
+    , TransformerBattle = require('./transformer-battle');
 
 var menu
-    , autobots = []
-    , decepticons = []
-    , battleCount = 0
-    , winningTeam = ""
-    , survivors = [];
 
 var start = function () {
     showMainMenu();
@@ -62,7 +58,7 @@ var showMainMenu = function () {
                 addTransformer();
                 break;
             case '2':
-                listTransformers();
+                listAllTransformers();
                 break;
             case '4':
                 console.log('Thanks for playing!');
@@ -79,12 +75,13 @@ var addTransformer = function () {
     getTransformerAttributeInput(transformer, 0);
 };
 
-var listTransformers = function () {
+var listAllTransformers = function () {
     // clear screen
     process.stdout.write('\033c');
 
     console.log('---------------Autobots------------------');
     console.log('');
+    var autobots = TransformerBattle.getAutobots();
     for (var i = 0; i < autobots.length; i++) {
         listTransformerProperties(autobots[i]);
         console.log('');
@@ -93,6 +90,7 @@ var listTransformers = function () {
 
     console.log('--------------Decepticons----------------');
     console.log('');
+    var decepticons = TransformerBattle.getDecepticons();
     for (var i = 0; i < decepticons.length; i++) {
         listTransformerProperties(decepticons[i]);
         console.log('');
@@ -118,36 +116,20 @@ var getTransformerAttributeInput = function (transformer, attributeIndex) {
     // create a new menu
     createMenu();
 
-    var objProps = Object.keys(transformer);
+    // get the Transformer class public properties
+    var objProps = Transformer.prototype.attributes;
+    var objPropValidator = Transformer.prototype[objProps[attributeIndex] + 'Validator'];
 
-    // configure input validator
-    var validator = {};
-    switch (objProps[attributeIndex]) {
-        case 'name':
-            validator.hint = '';
-            validator.type = 'string';
-            break;
-        case 'affiliation':
-            validator.hint = '(A/D)';
-            validator.type = 'option';
-            validator.options = ['A','D'];
-            break;
-        default:
-            validator.hint = '(1-10)';
-            validator.type = 'option';
-            validator.options = ['1','2','3','4','5','6','7','8','9','10'];
-
-    }
-
-    menu.question('Enter the Transformer\'s ' + objProps[attributeIndex] + ' ' + validator.hint + '> ', function (input) {
-        if (validateInput(input, validator)) {
+    menu.question('Enter the Transformer\'s ' +
+        objProps[attributeIndex] + (objPropValidator.hint ? ' (' + objPropValidator.hint + ')' : '') + '> ', function (input) {
+        if (validateInput(input, objPropValidator)) {
             transformer[objProps[attributeIndex]] = input;
             attributeIndex += 1;
             if (attributeIndex === objProps.length) {
                 // clear screen
                 process.stdout.write('\033c');
 
-                showTransformerAttributes(transformer);
+                showNewTransformerAttributes(transformer);
             } else {
                 getTransformerAttributeInput(transformer, attributeIndex);
             }
@@ -158,28 +140,26 @@ var getTransformerAttributeInput = function (transformer, attributeIndex) {
 };
 
 var listTransformerProperties = function (transformer) {
-    var props = Object.keys(transformer);
+    // var props = Object.getOwnPropertyNames(Transformer.prototype);
+    var props = Transformer.prototype.attributes;
     for (var i = 0; i < props.length; i++) {
         console.log(props[i] + ': ' + transformer[props[i]]);
     }
-    console.log('overall rating: ' + transformer.overallRating());
+    console.log('overall rating: ' + transformer.overallRating);
 };
 
-var showTransformerAttributes = function (transformer) {
+var showNewTransformerAttributes = function (transformer) {
     console.log('---------------- Transformer Attributes ----------------');
     listTransformerProperties(transformer);
     console.log('-------------------------------------------------------');
+
     // create a new menu
     createMenu();
 
-    menu.question('Would you like to add this transformer? (Y/N)> ', function (input) {
+    menu.question('\nWould you like to add this transformer? (Y/N)> ', function (input) {
         switch (input.toLowerCase()) {
             case 'y':
-                if (transformer['affiliation'] === 'D') {
-                    decepticons.push(transformer);
-                } else {
-                    autobots.push(transformer);
-                }
+                TransformerBattle.addTransformer(transformer);
                 showTransformerAdded();
                 break;
             case 'n':

@@ -9,98 +9,284 @@ module.exports = Transformer;
 function Transformer() {
     'use strict';
 
-    var _self = this;
     if (!(this instanceof Transformer)) {
         throw new Error("Transformer needs to be called with the new keyword");
     }
 
-    this.name = '';
-    this.affiliation = '';
-    this.strength = 0;
-    this.intelligence = 0;
-    this.speed = 0;
-    this.endurance = 0;
-    this.rank = 0;
-    this.courage = 0;
-    this.firePower = 0;
-    this.skill = 0;
+    this._name = '';
+    this._affiliation = '';
+    this._strength = 0;
+    this._intelligence = 0;
+    this._speed = 0;
+    this._endurance = 0;
+    this._rank = 0;
+    this._courage = 0;
+    this._firePower = 0;
+    this._skill = 0;
+    this._alive = true;
 }
 
 Transformer.prototype = {};
 
-Transformer.prototype.overallRating = function () {
-    return parseInt(this.strength) +
-        parseInt(this.intelligence) +
-        parseInt(this.speed) +
-        parseInt(this.endurance) +
-        parseInt(this.rank) +
-        parseInt(this.courage) +
-        parseInt(this.firePower) +
-        parseInt(this.skill);
-};
+Object.defineProperty(Transformer.prototype, 'name', {
+    enumerable: true,
+    get: function () {
+        return this._name;
+    },
+    set: function (value) {
+        this._name = value;
+    }
+});
 
-// Transformer.prototype = {
-//     get name() {
-//         return this.name;
-//     },
-//     set name(name){
-//       this.name = name;
-//     },
-//     get affiliation() {
-//         return this.affiliation;
-//     },
-//     set affiliation(affiliation){
-//         this.affiliation = affiliation;
-//     },
-//     get strength() {
-//         return this.strength;
-//     },
-//     set strength(strength){
-//         this.strength = parseInt(strength);
-//     },
-//     get intelligence() {
-//         return this.intelligence;
-//     },
-//     set intelligence(intelligence){
-//         this.intelligence = parseInt(intelligence);
-//     },
-//     get speed() {
-//         return this.speed;
-//     },
-//     set speed(speed){
-//         this.speed = parseInt(speed);
-//     },
-//     get endurance() {
-//         return this.endurance;
-//     },
-//     set endurance(endurance){
-//         this.endurance = parseInt(endurance);
-//     },
-//     get rank() {
-//         return this.rank;
-//     },
-//     set rank(rank){
-//         this.rank = parseInt(rank);
-//     },
-//     get courage() {
-//         return this.courage;
-//     },
-//     set courage(courage){
-//         this.courage = parseInt(courage);
-//     },
-//     get firePower() {
-//         return this.firePower;
-//     },
-//     set firePower(firePower){
-//         this.firePower = parseInt(firePower);
-//     },
-//     get skill() {
-//         return this.skill;
-//     },
-//     set skill(skill){
-//         this.skill = parseInt(skill);
-//     },
-//     overallRating: function (){
-//         return this.strength + this.intelligence + this.speed + this.endurance + this.rank + this.courage + this.firePower + this.skill
-//     }
-// };
+Object.defineProperty(Transformer.prototype, 'nameValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '',
+            type: 'string'
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'affiliation', {
+    enumerable: true,
+    get: function () {
+        return this._affiliation;
+    },
+    set: function (value) {
+        this._affiliation = value;
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'affiliationValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: 'A/D',
+            type: 'option',
+            options: ['A','D']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'strength', {
+    enumerable: true,
+    get: function () {
+        return this._strength;
+    },
+    set: function (value) {
+        this._strength = parseInt(value)
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'strengthValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+
+Object.defineProperty(Transformer.prototype, 'intelligence', {
+    enumerable: true,
+    get: function () {
+        return this._intelligence;
+    },
+    set: function (value) {
+        this._intelligence = parseInt(value)
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'intelligenceValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'speed', {
+    enumerable: true,
+    get: function () {
+        return this._speed;
+    },
+    set: function (value) {
+        this._speed = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'speedValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'endurance', {
+    enumerable: true,
+    get: function () {
+        return this._endurance;
+    },
+    set: function (value) {
+        this._endurance = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'enduranceValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'rank', {
+    enumerable: true,
+    get: function () {
+        return this._rank;
+    },
+    set: function (value) {
+        this._rank = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'rankValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'courage', {
+    enumerable: true,
+    get: function () {
+        return this._courage;
+    },
+    set: function (value) {
+        this._courage = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'courageValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'firePower', {
+    enumerable: true,
+    get: function () {
+        return this._firePower;
+    },
+    set: function (value) {
+        this._firePower = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'firePowerValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'skill', {
+    enumerable: true,
+    get: function () {
+        return this._skill;
+    },
+    set: function (value) {
+        this._skill = parseInt(value)
+    },
+    hint: '1-10',
+    type: 'option',
+    options: ['1','2','3','4','5','6','7','8','9','10']
+});
+
+Object.defineProperty(Transformer.prototype, 'skillValidator', {
+    enumerable: false,
+    get: function () {
+        return {
+            hint: '1-10',
+            type: 'option',
+            options: ['1','2','3','4','5','6','7','8','9','10']
+        }
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'alive', {
+    enumerable: false,
+    get: function () {
+        return this._alive;
+    },
+    set: function (value) {
+        this._alive = parseInt(value)
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'attributes', {
+    enumerable: false,
+    get: function () {
+        var attrs = [];
+        for (attr in Transformer.prototype) {
+            attrs.push(attr);
+        }
+        return attrs;
+    }
+});
+
+Object.defineProperty(Transformer.prototype, 'overallRating', {
+    enumerable: false,
+    get: function () {
+        return this._strength +
+            this._intelligence +
+            this._speed +
+            this._endurance +
+            this._rank +
+            this._courage +
+            this._firePower +
+            this._skill;
+    }
+});
