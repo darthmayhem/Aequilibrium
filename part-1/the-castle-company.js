@@ -1,12 +1,12 @@
 /**
  * Created by steve haight on 10/6/2017.
  *
- * description: this library is used as the inpout harness for running the peaks-and-valleys module
+ * description: this library is used as the input harness for running the peaks-and-valleys module
  */
 
 var peaksAndValleys = require('./peaks-and-valleys');
 
-console.log('\n\nWelcome to the first part of the Aequilibrium Technical Assignment: The Castle Company');
+console.log('\n\nWelcome to the part one of the Aequilibrium Technical Assignment: The Castle Company');
 
 var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
@@ -32,7 +32,6 @@ rl.on('line', function (line) {
     console.log('  Based on your provided data, you should build ' + castleCount + ' castles.  ');
     console.log('-----------------------------------------------------------------');
 
-    // rl.close();
     rl.prompt();
 }).on('close', function () {
     console.log('\nThanks for coming!');
