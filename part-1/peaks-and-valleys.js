@@ -1,5 +1,7 @@
 /**
  * Created by steve haight on 10/6/2017.
+ *
+ * description: this library recieves and validates an array finding the peaks and valleys in it.
  */
 
 function validEntry(entry){
