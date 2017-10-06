@@ -21,7 +21,7 @@ ints. For example, in the sequence [2,6,6,6,3] the sequence of 3 6s is a peak.
 * A valley is an integer or series of integers that is below the immediately preceding and
 following ints. For example, in the sequence [6,1,4] the "1" would be a valley.
 
-## Execution
+### Execution
 
 To run the completed example:
 
