@@ -42,7 +42,7 @@ displays:
 2. The winning team
 3. The surviving members of the losing team
 
-The basic rules of the battle are:
+**The basic rules of the battle are:**
 * The teams should be sorted by rank and faced off one on one against each other in order to
 determine a victor, the loser is eliminated
 * A battle between opponents uses the following rules:
@@ -59,7 +59,7 @@ the fight regardless of overall rating
 only going to be one battle)
 * The team who eliminated the largest number of the opposing team is the winner
 
-Special rules:
+**Special rules:**
 * Any Transformer named Optimus Prime or Predaking wins his fight automatically regardless of
 any other criteria
 * In the event either of the above face each other (or a duplicate of each other), the game
