@@ -6,21 +6,21 @@
 
 var peaksAndValleys = require('./peaks-and-valleys');
 
-console.log('Welcome to the first part of the Aequilibrium Technical Assignment: The Castle Company\n');
+console.log('\n\nWelcome to the first part of the Aequilibrium Technical Assignment: The Castle Company');
 
 var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
 
-rl.setPrompt('Please enter your peak and valley array numbers separated by commas (type exit to quit):>');
+rl.setPrompt('\n\nPlease enter your peak and valley array numbers separated by commas\n(type exit to quit)>');
 rl.on('line', function (line) {
     var array = line.toString().split(',');
     if (line === 'exit'){
         rl.close();
         return;
     }
-    if (!peaksAndValleys.validateArray(array)){
-        console.log('\nError: We are not able to process your input! Please try again.\n(Invalid array detected)\n\n');
-        rl.setPrompt('Please enter your peak and valley array numbers separated by commas (positive integers only please, type exit to quit):>');
+    if (!peaksAndValleys.validateInput(array)){
+        console.log('\nError: We are not able to process your input!\nPlease try again. (Invalid array detected)\n\n');
+        rl.setPrompt('Please enter your peak and valley array numbers separated by commas\n(integers only please, type exit to quit)>');
         rl.prompt();
         return;
     }
@@ -28,11 +28,14 @@ rl.on('line', function (line) {
     var obj = peaksAndValleys.find(array)
         , castleCount = obj.peaks.length + obj.valleys.length;
 
-    console.log('\nBased on your provided array, you should build ' + castleCount + ' castles.');
+    console.log('\n-----------------------------------------------------------------');
+    console.log('  Based on your provided data, you should build ' + castleCount + ' castles.  ');
+    console.log('-----------------------------------------------------------------');
 
-    rl.close();
+    // rl.close();
+    rl.prompt();
 }).on('close', function () {
-    console.log('\nthanks for coming!');
+    console.log('\nThanks for coming!');
     process.exit(0);
 });
 
