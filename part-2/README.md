@@ -6,10 +6,10 @@ representation of transformation than Hasbro’s Transformers , the classic tele
 heroic Autobots raging their battle to destroy the evil forces of the Deceptions.
 
 **Please watch this video:**
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=nLS2N9mHWaw
 " target="_blank"><img src="http://img.youtube.com/vi/nLS2N9mHWaw/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
-https://www.youtube.com/watch?v=nLS2N9mHWaw
 
 **And write the following in whatever language you like:**
 
