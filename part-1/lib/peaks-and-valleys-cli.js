@@ -7,7 +7,7 @@
 require('./string-replace-token');
 
 var peaksAndValleys = require('./peaks-and-valleys')
-    , uiText = require('./resources/text');
+    , uiText = require('../resources/text');
 
 var start = function () {
     // clear screen

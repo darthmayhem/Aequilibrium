@@ -9,7 +9,7 @@ require('./string-replace-token');
 var readline = require('readline')
     , Transformer = require('./transformer')
     , TransformerBattle = require('./transformer-battle')
-    , uiText = require('./resources/text')
+    , uiText = require('../resources/text')
     , menu;
 
 var start = function () {
@@ -89,7 +89,7 @@ var showMainMenu = function () {
     // log the main menu
     renderMenu(uiText.menus.main);
 
-    menu.question('> ', function (input) {
+    menu.question(uiText.tpls.dataEntryPrompt, function (input) {
         switch (input) {
             case '1':
                 addTransformer();
@@ -102,6 +102,9 @@ var showMainMenu = function () {
                 break;
             case '4':
                 executeBattle();
+                break;
+            case '5':
+                resetBattlefield();
                 break;
             case '0':
                 exitProgram();
@@ -123,8 +126,41 @@ var exitProgram = function () {
 
     renderApplicationHeader();
 
+    // display transformer ascii
+    console.log('');
+    console.log(uiText.asciiOptimusPrime.join('\n'));
+    console.log('');
+
     console.log(uiText.messages.farewell);
     process.exit();
+};
+
+var resetBattlefield = function (){
+    /**
+     @param none
+     @return none
+     */
+
+    // clear screen
+    process.stdout.write('\033c');
+
+    renderApplicationHeader();
+
+    createMenu();
+
+    menu.question(uiText.actions.confirmReset + uiText.tpls.dataEntryPrompt, function (input) {
+        switch (input.toLowerCase()) {
+            case 'y':
+                TransformerBattle.reset();
+                showMainMenu();
+                break;
+            case 'n':
+                showMainMenu();
+                break;
+            default:
+                resetBattlefield(transformer); // show menu again if input does not match
+        }
+    });
 };
 
 var showSectionHeader = function (header) {
@@ -226,7 +262,7 @@ var getTransformerAttributeInput = function (transformer, attributeIndex) {
     var objPropValidator = Transformer.prototype[objProps[attributeIndex] + 'Validator'];
 
     menu.question(
-        uiText.actions.enterTransformerAttribute.replaceTokens([objProps[attributeIndex] + (objPropValidator.hint ? ' (' + objPropValidator.hint + ')' : '')]) + '> ',
+        uiText.actions.enterTransformerAttribute.replaceTokens([objProps[attributeIndex] + (objPropValidator.hint ? ' (' + objPropValidator.hint + ')' : '')]) + uiText.tpls.dataEntryPrompt,
         function (input) {
             if (validateInput(input, objPropValidator)) {
                 transformer[objProps[attributeIndex]] = input;
@@ -273,7 +309,7 @@ var showNewTransformerAttributes = function (transformer) {
 
     createMenu();
 
-    menu.question(uiText.actions.confirmAddTransformer + '> ', function (input) {
+    menu.question(uiText.actions.confirmAddTransformer + uiText.tpls.dataEntryPrompt, function (input) {
         switch (input.toLowerCase()) {
             case 'y':
                 TransformerBattle.addTransformer(transformer);
@@ -328,6 +364,11 @@ var executeBattle = function () {
     }
 
     console.log(uiText.messages.rumble);
+
+    // display transformer ascii
+    console.log('');
+    console.log(uiText.asciiOptimusPrime.join('\n'));
+    console.log('');
 
     // execute the fight!!!
     TransformerBattle.doBattle();

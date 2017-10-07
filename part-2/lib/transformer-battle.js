@@ -34,6 +34,23 @@ var addTransformer = function (transformer) {
     sortTransformers();
 };
 
+var reset = function () {
+    /**
+     @param none
+     @return none
+     */
+
+    transformers.autobots = [];
+    transformers.decepticons = [];
+    survivors.winners = [];
+    survivors.losers = [];
+    battleCount = 0;
+    decepticonWins = 0;
+    autobotWins = 0;
+    winningTeam = '';
+    losingTeam = '';
+};
+
 var getAutobots = function () {
     /**
      @param none
@@ -58,7 +75,7 @@ var sortCompare = function (a, b) {
      @param {string} b
      @return {Number}
      */
-    
+
     return (a.rank < b.rank) ? 1 : ((b.rank < a.rank) ? -1 : 0);
 };
 
@@ -84,7 +101,7 @@ var doBattle = function () {
         // Optimus Prime / Predaking battle rule
         ruleOptimusPrimePredaking(transformers.autobots[i], transformers.decepticons[i]);
 
-        // courage strength battle rule (if both still alive)
+        // courage / strength battle rule (if both still alive)
         if (transformers.autobots[i].alive && transformers.decepticons[i].alive) {
             ruleCourageStrength(transformers.autobots[i], transformers.decepticons[i]);
         }
@@ -228,7 +245,7 @@ var processSurvivors = function (winner, loser) {
         survivors.winners.push(transformers[winner][i].name);
     }
 
-    // store losing survivors
+    // store losing team survivors
     for (var i = 0, len = transformers[loser].length; i < len; i++) {
         if (transformers[loser][i].alive) {
             survivors.losers.push(transformers[loser][i].name);
@@ -257,5 +274,6 @@ module.exports = {
     getAutobots: getAutobots,
     getDecepticons: getDecepticons,
     doBattle: doBattle,
-    getResults: getResults
+    getResults: getResults,
+    reset: reset
 };
