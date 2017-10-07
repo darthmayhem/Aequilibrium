@@ -23,7 +23,7 @@ following ints. For example, in the sequence [6,1,4] the "1" would be a valley.
 
 ### Execution
 
-To run the completed example:
+To run the example from a console window:
 
 ```
 node app.js
@@ -36,4 +36,4 @@ A valid sample input array would look like:
 
 ## Developer Notes and Assumptions
 
-* Assumes a non empty array of integer values for input.  All other inputs are determined invalid.
+* Assumes a non empty array of only integer values for input.  All other inputs are determined invalid.

@@ -82,20 +82,12 @@ Survivors from the losing team (Autobots): Hubcap
 
 ### Execution
 
-To run the completed example:
+To run the example for a console window:
 
 ```
 node app.js
 ```
 
-A valid sample input array would look like:
-```
-Soundwave, D, 8,9,2,6,7,5,6,10
-
-Bluestreak, A, 6,6,7,9,5,2,9,7
-
-Hubcap, A, 4,4,4,4,4,4,4,4
-```
-
 ## Developer Notes and Assumptions
 
+* I may have gone to far on the cli portion of this part.  I wasn't clear on if the input was supposed to be done as arrays or not.  So I went the extra distance and provided a robust UI for data entry
