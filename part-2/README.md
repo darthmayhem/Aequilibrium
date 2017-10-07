@@ -82,7 +82,7 @@ Survivors from the losing team (Autobots): Hubcap
 
 ### Execution
 
-To run the example for a console window:
+To run the example from a console window:
 
 ```
 node app.js
