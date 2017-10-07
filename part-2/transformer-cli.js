@@ -42,14 +42,15 @@ var showMainMenu = function () {
 
     // log the main menu
     console.log('\nWelcome to the part 2 of the Aequilibrium Technical Assignment: The Transformation Company');
-    console.log(
-        '\n\n' +
-        'What would you like to do?\n\n' +
-        '1) Add a Transformer\n' +
-        '2) List Transformers\n' +
-        '3) Do battle\n' +
-        '4) Quit\n'
-    );
+    console.log('\nWhat would you like to do?\n');
+    console.log('1) Add a Transformer');
+    if (TransformerBattle.getAutobots().length > 0 || TransformerBattle.getDecepticons().length > 0)
+        console.log('2) List Transformers');
+    if (TransformerBattle.getAutobots().length > 0 && TransformerBattle.getDecepticons().length > 0)
+        console.log('3) Do battle');
+    if (TransformerBattle.getAutobots().length > 0 || TransformerBattle.getDecepticons().length > 0)
+        console.log('4) Reset');
+    console.log('5) Quit');
 
     menu.question('> ', function (input) {
         switch (input) {
@@ -62,7 +63,7 @@ var showMainMenu = function () {
             case '3':
                 battle();
                 break;
-            case '4':
+            case '5':
                 // clear screen
                 process.stdout.write('\033c');
                 console.log('Thanks for playing!');

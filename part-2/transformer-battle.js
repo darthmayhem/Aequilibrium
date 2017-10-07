@@ -86,10 +86,10 @@ var ruleStatOffet = function (autobot, decepticon) {
     var allAttrs = autobot.attributes;
     for (var i = 0; i < allAttrs.length; i++) {
         var attr = allAttrs[i];
-        if (autobot[attr] + offset >= decepticon[attr]) {
+        if (autobot[attr] + offset >= decepticon[attr] + offset ) {
             decepticon.alive = false;
             autobotWins += 1;
-        } else if (decepticon[attr] + offset >= autobot[attr]) {
+        } else if (decepticon[attr] >= autobot[attr] + offset ) {
             autobot.alive = false;
             decepticonWins += 1;
         }
@@ -111,21 +111,24 @@ var ruleOverallRating = function (autobot, decepticon) {
 
 var processResults = function () {
     // set winner / loser
+    winningTeam = 'Tie';
+    losingTeam = 'Tie';
     if (decepticonWins > autobotWins) {
         winningTeam = 'Decepticons';
         losingTeam = 'Autobots';
     } else if (autobotWins > decepticonWins) {
         winningTeam = 'Autobots';
         losingTeam = 'Decepticons';
-    } else {
-        winningTeam = 'Tied';
-        losingTeam = 'Tied';
     }
 
-    if (winningTeam !== 'Tied' && losingTeam !== 'Tied') {
+    if (winningTeam !== 'Tie') {
         survivors = processSurvivors(winningTeam.toLowerCase(), losingTeam.toLowerCase());
+    } else {
+        survivors = {
+            winners: [],
+            losers: []
+        };
     }
-
 };
 
 var processSurvivors = function (winner, loser) {
@@ -135,17 +138,17 @@ var processSurvivors = function (winner, loser) {
         losers: []
     };
 
-    // store losing survivors
-    for (i = 0; i < transformers[loser].length; i++) {
-        if (transformers[loser][i].alive) {
-            survivors.losers.push(transformers[loser][i].name);
-        }
-    }
-
     // store winning survivors
     for (i = 0; i < transformers[winner].length; i++) {
         if (transformers[winner][i].alive) {
             survivors.winners.push(transformers[winner][i].name);
+        }
+    }
+
+    // store losing survivors
+    for (i = 0; i < transformers[loser].length; i++) {
+        if (transformers[loser][i].alive) {
+            survivors.losers.push(transformers[loser][i].name);
         }
     }
 

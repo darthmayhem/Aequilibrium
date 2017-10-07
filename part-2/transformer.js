@@ -262,7 +262,7 @@ Object.defineProperty(Transformer.prototype, 'alive', {
         return this._alive;
     },
     set: function (value) {
-        this._alive = parseInt(value)
+        this._alive = value;
     }
 });
 
