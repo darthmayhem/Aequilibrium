@@ -6,9 +6,8 @@
 
 var readline = require('readline')
     , Transformer = require('./transformer')
-    , TransformerBattle = require('./transformer-battle');
-
-var menu
+    , TransformerBattle = require('./transformer-battle')
+    , menu;
 
 var start = function () {
     showMainMenu();
@@ -29,7 +28,7 @@ var showContinuePrompt = function () {
     // create a new menu
     createMenu();
 
-    menu.question('\n\npress enter to continue >>>', function (input) {
+    menu.question('\n\npress enter to continue >>>', function () {
         showMainMenu();
     });
 };
@@ -60,7 +59,12 @@ var showMainMenu = function () {
             case '2':
                 listAllTransformers();
                 break;
+            case '3':
+                battle();
+                break;
             case '4':
+                // clear screen
+                process.stdout.write('\033c');
                 console.log('Thanks for playing!');
                 process.exit();
                 break;
@@ -76,13 +80,15 @@ var addTransformer = function () {
 };
 
 var listAllTransformers = function () {
+    var i;
+
     // clear screen
     process.stdout.write('\033c');
 
     console.log('---------------Autobots------------------');
     console.log('');
     var autobots = TransformerBattle.getAutobots();
-    for (var i = 0; i < autobots.length; i++) {
+    for (i = 0; i < autobots.length; i++) {
         listTransformerProperties(autobots[i]);
         console.log('');
     }
@@ -91,7 +97,7 @@ var listAllTransformers = function () {
     console.log('--------------Decepticons----------------');
     console.log('');
     var decepticons = TransformerBattle.getDecepticons();
-    for (var i = 0; i < decepticons.length; i++) {
+    for (i = 0; i < decepticons.length; i++) {
         listTransformerProperties(decepticons[i]);
         console.log('');
     }
@@ -126,9 +132,6 @@ var getTransformerAttributeInput = function (transformer, attributeIndex) {
             transformer[objProps[attributeIndex]] = input;
             attributeIndex += 1;
             if (attributeIndex === objProps.length) {
-                // clear screen
-                process.stdout.write('\033c');
-
                 showNewTransformerAttributes(transformer);
             } else {
                 getTransformerAttributeInput(transformer, attributeIndex);
@@ -149,6 +152,9 @@ var listTransformerProperties = function (transformer) {
 };
 
 var showNewTransformerAttributes = function (transformer) {
+    // clear screen
+    process.stdout.write('\033c');
+
     console.log('---------------- Transformer Attributes ----------------');
     listTransformerProperties(transformer);
     console.log('-------------------------------------------------------');
@@ -166,7 +172,7 @@ var showNewTransformerAttributes = function (transformer) {
                 showMainMenu();
                 break;
             default:
-                showTransformerAttributes(); // show menu again if input does not match
+                showNewTransformerAttributes(transformer); // show menu again if input does not match
         }
     });
 };
@@ -176,6 +182,40 @@ var showTransformerAdded = function () {
     process.stdout.write('\033c');
 
     console.log('Transformer added.');
+    showContinuePrompt();
+};
+
+var battle = function (){
+    // clear screen
+    process.stdout.write('\033c');
+
+    if (TransformerBattle.getDecepticons().length === 0){
+        console.log('Error: Add more Decepticons');
+        showContinuePrompt();
+        return;
+    }
+
+    if (TransformerBattle.getAutobots().length === 0){
+        console.log('Error: Add more Autobots');
+        showContinuePrompt();
+        return;
+    }
+
+    console.log('\nLets rumble!!!');
+
+    // execute the fight!!!
+    TransformerBattle.doBattle();
+
+    var results = TransformerBattle.getResults();
+    var winners = results.survivors.winners.join(', ');
+    var losers = results.survivors.losers.join(', ');
+
+    console.log('\n\n------------------ Battle Results ------------------' );
+    console.log(results.battleCount + ' battle' + (results.battleCount > 1 ? 's' : ''));
+    console.log('Survivors from the winning team (' + results.winningTeam + '): ' + (winners.length > 0 ? winners : 'none'));
+    console.log('Survivors from the losing team (' + results.losingTeam + '): ' + (losers.length > 0 ? losers : 'none'));
+    console.log('----------------------------------------------------' );
+
     showContinuePrompt();
 };
 
