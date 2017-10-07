@@ -58,7 +58,8 @@ var sortCompare = function (a, b) {
      @param {string} b
      @return {Number}
      */
-    return (a.overallRating < b.overallRating) ? 1 : ((b.overallRating < a.overallRating) ? -1 : 0);
+    
+    return (a.rank < b.rank) ? 1 : ((b.rank < a.rank) ? -1 : 0);
 };
 
 var sortTransformers = function () {
