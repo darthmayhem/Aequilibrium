@@ -7,6 +7,11 @@
 module.exports = Transformer;
 
 function Transformer() {
+    /**
+     @param none
+     @return none
+     */
+
     'use strict';
 
     if (!(this instanceof Transformer)) {
@@ -64,7 +69,7 @@ Object.defineProperty(Transformer.prototype, 'affiliationValidator', {
         return {
             hint: 'A/D',
             type: 'option',
-            options: ['A','D']
+            options: ['A', 'D']
         }
     }
 });
@@ -85,7 +90,7 @@ Object.defineProperty(Transformer.prototype, 'strengthValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -107,7 +112,7 @@ Object.defineProperty(Transformer.prototype, 'intelligenceValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -119,10 +124,7 @@ Object.defineProperty(Transformer.prototype, 'speed', {
     },
     set: function (value) {
         this._speed = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'speedValidator', {
@@ -131,7 +133,7 @@ Object.defineProperty(Transformer.prototype, 'speedValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -143,10 +145,7 @@ Object.defineProperty(Transformer.prototype, 'endurance', {
     },
     set: function (value) {
         this._endurance = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'enduranceValidator', {
@@ -155,7 +154,7 @@ Object.defineProperty(Transformer.prototype, 'enduranceValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -167,10 +166,7 @@ Object.defineProperty(Transformer.prototype, 'rank', {
     },
     set: function (value) {
         this._rank = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'rankValidator', {
@@ -179,7 +175,7 @@ Object.defineProperty(Transformer.prototype, 'rankValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -191,10 +187,7 @@ Object.defineProperty(Transformer.prototype, 'courage', {
     },
     set: function (value) {
         this._courage = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'courageValidator', {
@@ -203,7 +196,7 @@ Object.defineProperty(Transformer.prototype, 'courageValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -215,10 +208,7 @@ Object.defineProperty(Transformer.prototype, 'firePower', {
     },
     set: function (value) {
         this._firePower = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'firePowerValidator', {
@@ -227,7 +217,7 @@ Object.defineProperty(Transformer.prototype, 'firePowerValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -239,10 +229,7 @@ Object.defineProperty(Transformer.prototype, 'skill', {
     },
     set: function (value) {
         this._skill = parseInt(value)
-    },
-    hint: '1-10',
-    type: 'option',
-    options: ['1','2','3','4','5','6','7','8','9','10']
+    }
 });
 
 Object.defineProperty(Transformer.prototype, 'skillValidator', {
@@ -251,7 +238,7 @@ Object.defineProperty(Transformer.prototype, 'skillValidator', {
         return {
             hint: '1-10',
             type: 'option',
-            options: ['1','2','3','4','5','6','7','8','9','10']
+            options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     }
 });
@@ -270,7 +257,7 @@ Object.defineProperty(Transformer.prototype, 'attributes', {
     enumerable: false,
     get: function () {
         var attrs = [];
-        for (attr in Transformer.prototype) {
+        for (var attr in Transformer.prototype) {
             attrs.push(attr);
         }
         return attrs;
@@ -280,13 +267,11 @@ Object.defineProperty(Transformer.prototype, 'attributes', {
 Object.defineProperty(Transformer.prototype, 'overallRating', {
     enumerable: false,
     get: function () {
-        return this._strength +
+        var rating = this._strength +
             this._intelligence +
             this._speed +
             this._endurance +
-            this._rank +
-            this._courage +
-            this._firePower +
-            this._skill;
+            this._firePower;
+        return rating;
     }
 });

@@ -14,13 +14,18 @@ var survivors = {
     losers: []
 };
 
-var battleCount
-    , decepticonWins = 0
-    , autobotWins = 0
-    , winningTeam
-    , losingTeam;
+var battleCount             // count of battles fought
+    , decepticonWins = 0    // count of decepticon wins
+    , autobotWins = 0       // count autobot wins
+    , winningTeam           // winning team name
+    , losingTeam;           // losing team name
 
 var addTransformer = function (transformer) {
+    /**
+     @param {Transformer} transformer
+     @return none
+     */
+
     if (transformer.affiliation === 'D') {
         transformers.decepticons.push(transformer);
     } else if (transformer.affiliation === 'A') {
@@ -30,32 +35,62 @@ var addTransformer = function (transformer) {
 };
 
 var getAutobots = function () {
+    /**
+     @param none
+     @return none
+     */
+
     return transformers.autobots;
 };
 
 var getDecepticons = function () {
+    /**
+     @param none
+     @return (Transformer}
+     */
+
     return transformers.decepticons;
 };
 
 var sortCompare = function (a, b) {
+    /**
+     @param {string} a
+     @param {string} b
+     @return {Number}
+     */
     return (a.overallRating < b.overallRating) ? 1 : ((b.overallRating < a.overallRating) ? -1 : 0);
 };
 
 var sortTransformers = function () {
+    /**
+     @param none
+     @return none
+     */
+
     transformers.autobots.sort(sortCompare);
     transformers.decepticons.sort(sortCompare);
 };
 
 var doBattle = function () {
+    /**
+     @param none
+     @return none
+     */
+
     battleCount = Math.min(transformers.autobots.length, transformers.decepticons.length);
 
     for (var i = 0; i < battleCount; i++) {
         // Optimus Prime / Predaking battle rule
         ruleOptimusPrimePredaking(transformers.autobots[i], transformers.decepticons[i]);
 
-        // attr offset battle rule (if both still alive)
+        // courage strength battle rule (if both still alive)
         if (transformers.autobots[i].alive && transformers.decepticons[i].alive) {
-            ruleStatOffet(transformers.autobots[i], transformers.decepticons[i]);
+            ruleCourageStrength(transformers.autobots[i], transformers.decepticons[i]);
+        }
+
+        // skill battle rule (if both still alive)
+        if (transformers.autobots[i].alive && transformers.decepticons[i].alive) {
+            ruleSkill(transformers.autobots[i], transformers.decepticons[i]);
         }
 
         // overall rating battle rule (if both still alive)
@@ -68,35 +103,73 @@ var doBattle = function () {
 };
 
 var ruleOptimusPrimePredaking = function (autobot, decepticon) {
-    if (autobot.name === 'Optimus Prime' && decepticon.name !== 'Predaking') {
+    /**
+     @param {Transformer} autobot
+     @param {Transformer} decepticon
+     @return none
+     */
+
+    var eliteNames = [
+        'Optimus Prime',
+        'Predaking'
+    ];
+
+    if (eliteNames.indexOf(autobot.name) >= 0 && eliteNames.indexOf(decepticon.name) < 0) {
         decepticon.alive = false;
         autobotWins += 1;
-    } else if (autobot.name !== 'Optimus Prime' && decepticon.name === 'Predaking') {
+    } else if (eliteNames.indexOf(autobot.name) < 0 && eliteNames.indexOf(decepticon.name) >= 0) {
         autobot.alive = false;
         decepticonWins += 1;
-    } else if (autobot.name === 'Optimus Prime' && decepticon.name === 'Predaking') {
+    } else if (eliteNames.indexOf(autobot.name) >= 0 && eliteNames.indexOf(decepticon.name) >= 0) {
         decepticon.alive = false;
         autobot.alive = false;
     }
 };
 
-var ruleStatOffet = function (autobot, decepticon) {
-    var offset = 3;
+var ruleSkill = function (autobot, decepticon) {
+    /**
+     @param {Transformer} autobot
+     @param {Transformer} decepticon
+     @return none
+     */
 
-    var allAttrs = autobot.attributes;
-    for (var i = 0; i < allAttrs.length; i++) {
-        var attr = allAttrs[i];
-        if (autobot[attr] + offset >= decepticon[attr] + offset ) {
-            decepticon.alive = false;
-            autobotWins += 1;
-        } else if (decepticon[attr] >= autobot[attr] + offset ) {
-            autobot.alive = false;
-            decepticonWins += 1;
-        }
+    var offset = 3; // stat comparison difference
+
+    if (autobot.skill >= decepticon.skill + offset) {
+        decepticon.alive = false;
+        autobotWins += 1;
+    } else if (decepticon.skill >= autobot.skill + offset) {
+        autobot.alive = false;
+        decepticonWins += 1;
+    }
+};
+
+var ruleCourageStrength = function (autobot, decepticon) {
+    /**
+     @param {Transformer} autobot
+     @param {Transformer} decepticon
+     @return none
+     */
+
+    var offsetCourage = 4       // courage comparison difference
+        , offsetStrength = 3;   // strength comparison difference
+
+    if (autobot.courage >= decepticon.courage + offsetCourage && autobot.strength >= decepticon.strength + offsetStrength) {
+        decepticon.alive = false;
+        autobotWins += 1;
+    } else if (decepticon.courage >= autobot.courage + offsetCourage && decepticon.strength >= autobot.strength + offsetStrength) {
+        autobot.alive = false;
+        decepticonWins += 1;
     }
 };
 
 var ruleOverallRating = function (autobot, decepticon) {
+    /**
+     @param {Transformer} autobot
+     @param {Transformer} decepticon
+     @return none
+     */
+
     if (autobot.overallRating > decepticon.overallRating) {
         decepticon.alive = false;
         autobotWins += 1;
@@ -110,9 +183,15 @@ var ruleOverallRating = function (autobot, decepticon) {
 };
 
 var processResults = function () {
+    /**
+     @param none
+     @return none
+     */
+
     // set winner / loser
     winningTeam = 'Tie';
     losingTeam = 'Tie';
+
     if (decepticonWins > autobotWins) {
         winningTeam = 'Decepticons';
         losingTeam = 'Autobots';
@@ -132,21 +211,24 @@ var processResults = function () {
 };
 
 var processSurvivors = function (winner, loser) {
-    var i;
+    /**
+     @param {string} winner
+     @param {string} loser
+     @return {object}
+     */
+
     var survivors = {
         winners: [],
         losers: []
     };
 
-    // store winning survivors
-    for (i = 0; i < transformers[winner].length; i++) {
-        if (transformers[winner][i].alive) {
-            survivors.winners.push(transformers[winner][i].name);
-        }
+    // store winning team
+    for (var i = 0, len = transformers[winner].length; i < len; i++) {
+        survivors.winners.push(transformers[winner][i].name);
     }
 
     // store losing survivors
-    for (i = 0; i < transformers[loser].length; i++) {
+    for (var i = 0, len = transformers[loser].length; i < len; i++) {
         if (transformers[loser][i].alive) {
             survivors.losers.push(transformers[loser][i].name);
         }
@@ -156,6 +238,11 @@ var processSurvivors = function (winner, loser) {
 };
 
 var getResults = function () {
+    /**
+     @param none
+     @return {object}
+     */
+
     return {
         battleCount: battleCount,
         winningTeam: winningTeam,

@@ -26,7 +26,7 @@ following ints. For example, in the sequence [6,1,4] the "1" would be a valley.
 To run the completed example:
 
 ```
-node the-castle-company.js
+node app.js
 ```
 
 A valid sample input array would look like:

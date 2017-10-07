@@ -4,17 +4,29 @@
  * description: this module defines a cli for the Transformers modules
  */
 
+require('./string-replace-token');
+
 var readline = require('readline')
     , Transformer = require('./transformer')
     , TransformerBattle = require('./transformer-battle')
+    , uiText = require('./resources/text')
     , menu;
 
 var start = function () {
+    /**
+     @param none
+     @return none
+     */
+
     showMainMenu();
 };
 
 var createMenu = function () {
-    // check if there is already a menu active. If true, close it.
+    /**
+     @param none
+     @return none
+     */
+
     if (menu) menu.close();
 
     // creates a readline interface instance
@@ -25,32 +37,57 @@ var createMenu = function () {
 };
 
 var showContinuePrompt = function () {
+    /**
+     @param none
+     @return none
+     */
+
     // create a new menu
     createMenu();
 
-    menu.question('\n\npress enter to continue >>>', function () {
+    menu.question(uiText.actions.pressEnterToContinue, function () {
         showMainMenu();
     });
 };
 
+var renderMenu = function (menuArray) {
+    /**
+     @param {string[]} menuArray
+     @return none
+     */
+
+    for (var i = 0, len = menuArray.length; i < len; i++) {
+        console.log(menuArray[i]);
+    }
+};
+
+var renderApplicationHeader = function () {
+    /**
+     @param none
+     @return none
+     */
+
+    var txt = uiText.headers.global;
+    console.log(txt);
+    showHorizontalRule(txt.length);
+};
+
 var showMainMenu = function () {
+    /**
+     @param none
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
+
+    renderApplicationHeader();
 
     // create a new menu
     createMenu();
 
     // log the main menu
-    console.log('\nWelcome to the part 2 of the Aequilibrium Technical Assignment: The Transformation Company');
-    console.log('\nWhat would you like to do?\n');
-    console.log('1) Add a Transformer');
-    if (TransformerBattle.getAutobots().length > 0 || TransformerBattle.getDecepticons().length > 0)
-        console.log('2) List Transformers');
-    if (TransformerBattle.getAutobots().length > 0 && TransformerBattle.getDecepticons().length > 0)
-        console.log('3) Do battle');
-    if (TransformerBattle.getAutobots().length > 0 || TransformerBattle.getDecepticons().length > 0)
-        console.log('4) Reset');
-    console.log('5) Quit');
+    renderMenu(uiText.menus.main);
 
     menu.question('> ', function (input) {
         switch (input) {
@@ -58,16 +95,16 @@ var showMainMenu = function () {
                 addTransformer();
                 break;
             case '2':
-                listAllTransformers();
+                showAllTransformers('a');
                 break;
             case '3':
-                battle();
+                showAllTransformers('d');
                 break;
-            case '5':
-                // clear screen
-                process.stdout.write('\033c');
-                console.log('Thanks for playing!');
-                process.exit();
+            case '4':
+                executeBattle();
+                break;
+            case '0':
+                exitProgram();
                 break;
             default:
                 showMainMenu(); // show menu again if input does not match
@@ -75,50 +112,111 @@ var showMainMenu = function () {
     });
 };
 
-var addTransformer = function () {
-    var transformer = new Transformer();
-    getTransformerAttributeInput(transformer, 0);
-};
-
-var listAllTransformers = function () {
-    var i;
+var exitProgram = function () {
+    /**
+     @param none
+     @return none
+     */
 
     // clear screen
     process.stdout.write('\033c');
 
-    console.log('---------------Autobots------------------');
-    console.log('');
-    var autobots = TransformerBattle.getAutobots();
-    for (i = 0; i < autobots.length; i++) {
-        listTransformerProperties(autobots[i]);
-        console.log('');
-    }
-    console.log('-----------------------------------------\n\n');
+    renderApplicationHeader();
 
-    console.log('--------------Decepticons----------------');
-    console.log('');
-    var decepticons = TransformerBattle.getDecepticons();
-    for (i = 0; i < decepticons.length; i++) {
-        listTransformerProperties(decepticons[i]);
-        console.log('');
+    console.log(uiText.messages.farewell);
+    process.exit();
+};
+
+var showSectionHeader = function (header) {
+    /**
+     @param {string} header
+     @return none
+     */
+
+    console.log(uiText.tpls.sectionHeaderTpl.replaceTokens([header]));
+};
+
+var showHorizontalRule = function (length) {
+    /**
+     @param {int} length
+     @return none
+     */
+
+    var rule = '';
+    for (var i = 0; i < length-1; i++)
+        rule += '-';
+    console.log(rule);
+};
+
+var showAllTransformers = function (type) {
+    /**
+     @param {string} type
+     @return none
+     */
+
+    var title
+        , transformers;
+
+    // clear screen
+    process.stdout.write('\033c');
+
+    renderApplicationHeader();
+
+    switch (type.toLowerCase()){
+        case 'a':
+            title = uiText.headers.autobotsListHeader;
+            transformers = TransformerBattle.getAutobots();
+            break;
+        case 'd':
+            title = uiText.headers.decepticonsListHeader;
+            transformers = TransformerBattle.getDecepticons();
+            break;
     }
-    console.log('-----------------------------------------\n\n');
+
+    showSectionHeader(title);
+    for (var i = 0, len = transformers.length; i < len; i++) {
+        console.log('');
+        showTransformerProperties(transformers[i]);
+    }
 
     showContinuePrompt();
 };
 
-var validateInput = function(input, validator){
-    switch (validator.type){
+var addTransformer = function () {
+    /**
+     @param none
+     @return none
+     */
+
+    var transformer = new Transformer();
+    getTransformerAttributeInput(transformer, 0);
+};
+
+var validateInput = function (input, validator) {
+    /**
+     @param none
+     @return none
+     */
+
+    switch (validator.type) {
         case 'string':
             return input.length > 0;
         case 'option':
-            return validator.options.indexOf(input)>=0;
+            return validator.options.indexOf(input) >= 0;
     }
 };
 
 var getTransformerAttributeInput = function (transformer, attributeIndex) {
+    /**
+     @param {string} transformer
+     @param {int} attributeIndex
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
+
+    renderApplicationHeader();
 
     // create a new menu
     createMenu();
@@ -127,47 +225,60 @@ var getTransformerAttributeInput = function (transformer, attributeIndex) {
     var objProps = Transformer.prototype.attributes;
     var objPropValidator = Transformer.prototype[objProps[attributeIndex] + 'Validator'];
 
-    menu.question('Enter the Transformer\'s ' +
-        objProps[attributeIndex] + (objPropValidator.hint ? ' (' + objPropValidator.hint + ')' : '') + '> ', function (input) {
-        if (validateInput(input, objPropValidator)) {
-            transformer[objProps[attributeIndex]] = input;
-            attributeIndex += 1;
-            if (attributeIndex === objProps.length) {
-                showNewTransformerAttributes(transformer);
+    menu.question(
+        uiText.actions.enterTransformerAttribute.replaceTokens([objProps[attributeIndex] + (objPropValidator.hint ? ' (' + objPropValidator.hint + ')' : '')]) + '> ',
+        function (input) {
+            if (validateInput(input, objPropValidator)) {
+                transformer[objProps[attributeIndex]] = input;
+                attributeIndex += 1;
+                if (attributeIndex === objProps.length) {
+                    showNewTransformerAttributes(transformer);
+                } else {
+                    getTransformerAttributeInput(transformer, attributeIndex);
+                }
             } else {
                 getTransformerAttributeInput(transformer, attributeIndex);
             }
-        } else {
-            getTransformerAttributeInput(transformer, attributeIndex);
-        }
-    });
+        });
 };
 
-var listTransformerProperties = function (transformer) {
-    // var props = Object.getOwnPropertyNames(Transformer.prototype);
+var showTransformerProperties = function (transformer) {
+    /**
+     @param {Transformer} transformer
+     @return none
+     */
+
     var props = Transformer.prototype.attributes;
-    for (var i = 0; i < props.length; i++) {
+    showSectionHeader(transformer.name);
+    for (var i = 1, len = props.length; i < len; i++) {
         console.log(props[i] + ': ' + transformer[props[i]]);
     }
-    console.log('overall rating: ' + transformer.overallRating);
+    console.log(uiText.labels.overallRating + transformer.overallRating);
+    console.log(uiText.labels.alive + transformer.alive);
+    showHorizontalRule(uiText.tpls.sectionHeaderTpl.replaceTokens([transformer.name]).length);
 };
 
 var showNewTransformerAttributes = function (transformer) {
+    /**
+     @param {Transformer} transformer
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
 
-    console.log('---------------- Transformer Attributes ----------------');
-    listTransformerProperties(transformer);
-    console.log('-------------------------------------------------------');
+    renderApplicationHeader();
 
-    // create a new menu
+    showTransformerProperties(transformer);
+
     createMenu();
 
-    menu.question('\nWould you like to add this transformer? (Y/N)> ', function (input) {
+    menu.question(uiText.actions.confirmAddTransformer + '> ', function (input) {
         switch (input.toLowerCase()) {
             case 'y':
                 TransformerBattle.addTransformer(transformer);
-                showTransformerAdded();
+                // showAlert('Transformer added.');
+                showMainMenu();
                 break;
             case 'n':
                 showMainMenu();
@@ -178,31 +289,45 @@ var showNewTransformerAttributes = function (transformer) {
     });
 };
 
-var showTransformerAdded = function () {
+var showAlert = function (message) {
+    /**
+     @param {string} message
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
 
-    console.log('Transformer added.');
+    renderApplicationHeader();
+
+    console.log(message);
     showContinuePrompt();
 };
 
-var battle = function (){
+var executeBattle = function () {
+    /**
+     @param none
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
 
-    if (TransformerBattle.getDecepticons().length === 0){
-        console.log('Error: Add more Decepticons');
+    renderApplicationHeader();
+
+    if (TransformerBattle.getDecepticons().length === 0) {
+        console.log(uiText.errors.prefix + uiText.errors.noDecepticons);
         showContinuePrompt();
         return;
     }
 
-    if (TransformerBattle.getAutobots().length === 0){
-        console.log('Error: Add more Autobots');
+    if (TransformerBattle.getAutobots().length === 0) {
+        console.log(uiText.errors.prefix + uiText.errors.noAutobots);
         showContinuePrompt();
         return;
     }
 
-    console.log('\nLets rumble!!!');
+    console.log(uiText.messages.rumble);
 
     // execute the fight!!!
     TransformerBattle.doBattle();
@@ -211,11 +336,12 @@ var battle = function (){
     var winners = results.survivors.winners.join(', ');
     var losers = results.survivors.losers.join(', ');
 
-    console.log('\n\n------------------ Battle Results ------------------' );
-    console.log(results.battleCount + ' battle' + (results.battleCount > 1 ? 's' : ''));
-    console.log('Survivors from the winning team (' + results.winningTeam + '): ' + (winners.length > 0 ? winners : 'none'));
-    console.log('Survivors from the losing team (' + results.losingTeam + '): ' + (losers.length > 0 ? losers : 'none'));
-    console.log('----------------------------------------------------' );
+    showSectionHeader(uiText.headers.battleResults);
+    console.log(uiText.menus.battleResults[0].replaceTokens([results.battleCount, results.battleCount > 1 ? 's' : '']));
+    console.log(uiText.menus.battleResults[1].replaceTokens([results.winningTeam, winners.length > 0 ? winners : 'none']));
+    console.log(uiText.menus.battleResults[2].replaceTokens([results.losingTeam, losers.length > 0 ? losers : 'none']));
+    showHorizontalRule(uiText.tpls.sectionHeaderTpl.replaceTokens([uiText.headers.battleResults]).length);
+
 
     showContinuePrompt();
 };
