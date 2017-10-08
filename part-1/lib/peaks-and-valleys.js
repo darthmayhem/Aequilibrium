@@ -5,15 +5,25 @@
  */
 
 function validateEntry(entry) {
+    /**
+     @param {string} entry
+     @return {boolean}
+     */
+
     // entry must be a valid integer
     return !isNaN(parseFloat(entry));
 }
 
 module.exports = {
     find: function (array) {
+        /**
+         @param {Number[]} array
+         @return {object}
+         */
+
         var start = 1                           // index to begin comparing
-            , end = array.length - 1                // last index to compare
-            , obj = {peaks: [], valleys: []};       // object for storing peaks and valleys
+            , end = array.length - 1            // last index to compare
+            , obj = {peaks: [], valleys: []};   // object for storing peaks and valleys
 
         obj.peaks.push(0);  // always add a peak at start of array
 
@@ -32,6 +42,11 @@ module.exports = {
     },
 
     validateInput: function (array) {
+        /**
+         @param {Number[]} array
+         @return {boolean}
+         */
+
         return array.every(validateEntry);
     }
 };

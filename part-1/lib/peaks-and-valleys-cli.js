@@ -10,6 +10,11 @@ var peaksAndValleys = require('./peaks-and-valleys')
     , uiText = require('../resources/text');
 
 var start = function () {
+    /**
+     @param none
+     @return none
+     */
+
     // clear screen
     process.stdout.write('\033c');
 
@@ -51,6 +56,11 @@ var start = function () {
 };
 
 var showHorizontalRule = function (length) {
+    /**
+     @param {number} length
+     @return {string}
+     */
+
     var rule = '';
     for (var i = 0; i < length-1; i++)
         rule += '-';

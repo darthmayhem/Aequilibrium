@@ -5,6 +5,11 @@
  */
 
 String.prototype.replaceTokens = function (tokens) {
+    /**
+     @param {string[]} tokens
+     @return {string}
+     */
+
     return this.replace(/\{(\d+?)\}/g, function(match, index){
         return tokens[index];
     });
