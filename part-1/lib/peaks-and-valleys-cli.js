@@ -7,7 +7,8 @@
 require('./string-replace-token');
 
 var peaksAndValleys = require('./peaks-and-valleys')
-    , uiText = require('../resources/text');
+    , uiText = require('../resources/text')
+    , readline = require('readline');
 
 var start = function () {
     /**
@@ -20,7 +21,6 @@ var start = function () {
 
     console.log(uiText.headers.global);
 
-    var readline = require('readline');
     var rl = readline.createInterface(process.stdin, process.stdout);
 
     rl.setPrompt(uiText.actions.enterDataArray + uiText.tpls.dataEntryPrompt);
